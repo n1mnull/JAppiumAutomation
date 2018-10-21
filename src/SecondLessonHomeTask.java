@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
+import java.util.List;
 
 public class SecondLessonHomeTask {
 
@@ -52,6 +53,49 @@ public class SecondLessonHomeTask {
         );
     }
 
+    @Test
+    public void secondHomeTask() {
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
+                "Can`t find 'Search Wikipedia' input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                "Android",
+                "Can`t input 'Android' text to the search field",
+                5
+        );
+
+        List<WebElement> searchFieldElement = waitForElementsPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']"),
+                "Can`t find any 'Android' field element",
+                15
+        );
+
+        System.out.println(searchFieldElement.size());
+
+        Assert.assertTrue(
+                "Search result contains more than 1 article about 'Android'",
+                searchFieldElement.size() > 1
+        );
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_close_btn"),
+                "Can`t find 'Cancel Search' icon",
+                5
+        );
+
+        waitForElementsPresent(
+                By.id("org.wikipedia:id/search_empty_message"),
+                "Can`t cancel Search and I don`t see 'Search and read the free encyclopedia in your language' text",
+                5
+        );
+
+    }
+
     private WebElement waitForElementPresent(By by, String errorMessage) {
         return waitForElementPresent(by, errorMessage, 5);
     }
@@ -60,6 +104,12 @@ public class SecondLessonHomeTask {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(errorMessage + "\n");
         return wait.until(ExpectedConditions.presenceOfElementLocated(by));
+    }
+
+    private List<WebElement> waitForElementsPresent(By by, String errorMessage, long timeoutInSeconds) {
+        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
+        wait.withMessage(errorMessage + "\n");
+        return wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(by));
     }
 
     private WebElement waitForElementAndClick(By by, String errorMessage, long timeoutInSeconds) {
