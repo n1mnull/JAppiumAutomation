@@ -112,7 +112,7 @@ public class SecondLessonHomeTask {
                 5
         );
 
-        List<WebElement> searchFieldElement = waitForElementsPresent(
+        List<WebElement> searchArticleElementList = waitForElementsPresent(
                 By.id("org.wikipedia:id/page_list_item_title"),
                 "Can`t find any 'Android' field element",
                 15
@@ -120,7 +120,7 @@ public class SecondLessonHomeTask {
 
         Assert.assertTrue(
                 "Some of the articles doesn`t contain 'Android' text in their title",
-                isAllHeaderContainSearchText(searchFieldElement, searchValue+"1")
+                isAllHeaderContainSearchText(searchArticleElementList, searchValue)
         );
     }
 
