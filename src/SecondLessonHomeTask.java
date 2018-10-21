@@ -75,8 +75,6 @@ public class SecondLessonHomeTask {
                 15
         );
 
-        System.out.println(searchFieldElement.size());
-
         Assert.assertTrue(
                 "Search result contains more than 1 article about 'Android'",
                 searchFieldElement.size() > 1
@@ -94,6 +92,45 @@ public class SecondLessonHomeTask {
                 5
         );
 
+    }
+
+    @Test
+    public void thirdHomeTask() {
+
+        String searchValue = "Android";
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
+                "Can`t find 'Search Wikipedia' input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                searchValue,
+                "Can`t input 'Android' text to the search field",
+                5
+        );
+
+        List<WebElement> searchFieldElement = waitForElementsPresent(
+                By.id("org.wikipedia:id/page_list_item_title"),
+                "Can`t find any 'Android' field element",
+                15
+        );
+
+        Assert.assertTrue(
+                "Some of the articles doesn`t contain 'Android' text in their title",
+                isAllHeaderContainSearchText(searchFieldElement, searchValue+"1")
+        );
+    }
+
+    private boolean isAllHeaderContainSearchText(List<WebElement> searchFieldElement, String searchValue) {
+
+        for (WebElement element : searchFieldElement) {
+            if (!element.getAttribute("text").contains(searchValue))
+                return false;
+        }
+        return true;
     }
 
     private WebElement waitForElementPresent(By by, String errorMessage) {
