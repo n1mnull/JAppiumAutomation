@@ -127,7 +127,7 @@ public class SecondLessonHomeTask {
     private boolean isAllHeaderContainSearchText(List<WebElement> searchFieldElement, String searchValue) {
 
         for (WebElement element : searchFieldElement) {
-            if (!element.getAttribute("text").contains(searchValue))
+            if (!element.getAttribute("text").toLowerCase().contains(searchValue.toLowerCase()))
                 return false;
         }
         return true;
