@@ -102,10 +102,12 @@ public class ThirdLessonHomeTask {
                 "Can`t find 'OK' button"
         );
 
-        waitForElementAndClick(
-                By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
-                "Can`t find 'Navigate up' button, can`t close article"
-        );
+        driver.navigate().back();
+
+//        waitForElementAndClick(
+//                By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
+//                "Can`t find 'Navigate up' button, can`t close article"
+//        );
 
         // try to add 2nd article
 
@@ -141,10 +143,11 @@ public class ThirdLessonHomeTask {
                 "Can`t find folder " + folderName + " on saved reading list"
         );
 
-        waitForElementAndClick(
-                By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
-                "Can`t find 'Navigate up' button, can`t close article"
-        );
+        driver.navigate().back();
+//        waitForElementAndClick(
+//                By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
+//                "Can`t find 'Navigate up' button, can`t close article"
+//        );
 
         //open My list tab
 
@@ -191,12 +194,54 @@ public class ThirdLessonHomeTask {
 
     @Test
     public void secondHomeTask() {
+        String searchLine = "Android";
 
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
+                "Can`t find 'Search Wikipedia' input",
+                10
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                searchLine,
+                "Can`t input '" + searchLine + "' text to the search field"
+        );
+
+        List<WebElement> searchFieldElement = waitForElementsPresent(
+                By.id("org.wikipedia:id/page_list_item_title"),
+                "Can`t find any '" + searchLine + "' field element"
+        );
+
+        ArrayList<String> articlesTitle = getArticleTitles(searchFieldElement);
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='"+ articlesTitle.get(0)+"']"),
+                "Can`t find 1st article"
+        );
+
+        assertElementPresent(
+                By.id("org.wikipedia:id/view_page_title_text"),
+                "We have not found title of the article"
+        );
     }
 
     @Test
     public void thirdHomeTask() {
 
+    }
+
+    private void assertElementPresent(By by, String errorMessage) {
+        int amountOfElements = getAmountOfElements(by);
+        if (amountOfElements == 0) {
+            String defaultMessage = "An element '" + by.toString() + "' supposed to be not present";
+            throw new AssertionError(defaultMessage + " " + errorMessage);
+        }
+    }
+
+    private int getAmountOfElements(By by) {
+        List elements = driver.findElements(by);
+        return elements.size();
     }
 
     private boolean isAllHeaderContainSearchText(List<WebElement> searchFieldElement, String searchValue) {
