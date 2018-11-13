@@ -28,6 +28,12 @@ public class MainPageObject {
         return wait.until(ExpectedConditions.presenceOfElementLocated(by));
     }
 
+    public List<WebElement> waitForElementsPresent(By by, String errorMessage, long timeoutInSeconds) {
+        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
+        wait.withMessage(errorMessage + "\n");
+        return wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(by));
+    }
+
 //    private WebElement waitForElementPresentById(By by, String errorMessage, long timeoutInSeconds) {
 //        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
 //        wait.withMessage(errorMessage + "\n");
@@ -74,6 +80,14 @@ public class MainPageObject {
         WebElement element = waitForElementPresent(by, errorMessage, timeoutInSeconds);
         element.clear();
         return element;
+    }
+
+    public void assertElementPresent(By by, String errorMessage) {
+        int amountOfElements = getAmountOfElements(by);
+        if (amountOfElements == 0) {
+            String defaultMessage = "An element '" + by.toString() + "' supposed to be not present";
+            throw new AssertionError(defaultMessage + " " + errorMessage);
+        }
     }
 
     public void swipeUp(int timeOfSwipe) {

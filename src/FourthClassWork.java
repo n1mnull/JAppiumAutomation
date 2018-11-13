@@ -80,7 +80,7 @@ public class FourthClassWork extends CoreTestCase {
         articlePageObject.waitForTitleElement();
         String articleTitle = articlePageObject.getArticleTitle();
 
-        articlePageObject.addArticleToMyList(nameOfFolder);
+        articlePageObject.addArticleToNewMyList(nameOfFolder);
         articlePageObject.closeArticle();
 
         NavigationUI navigationUI = new NavigationUI(driver);

@@ -56,5 +56,13 @@ public class MyListsPageObject extends MainPageObject {
         );
     }
 
+    public void openArticleByName(String articleTitle) {
+        this.waitForArticleToAppearByTitle(articleTitle);
+        this.waitForElementAndClick(
+                By.xpath(getSavedArticleXpathByTitle(articleTitle)),
+                "Can`t find article be name " + articleTitle,
+                5
+        );
+    }
 
 }

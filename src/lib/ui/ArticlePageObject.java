@@ -14,10 +14,16 @@ public class ArticlePageObject extends MainPageObject {
             ADD_TO_MY_LIST_OVERLAY = "org.wikipedia:id/onboarding_button",
             MY_LIST_NAME_INPUT = "org.wikipedia:id/text_input",
             MY_LIST_OK_BUTTON = "//*[@text='OK']",
-            CLOSE_ARTICLE_BUTTON = "//android.widget.ImageButton[@content-desc='Navigate up']";
+            CLOSE_ARTICLE_BUTTON = "//android.widget.ImageButton[@content-desc='Navigate up']",
+            CHOISE_EXIST_FOLDER_TPL = "//*[@resource-id='org.wikipedia:id/item_container']//*[@text='{FOLDER_NAME}']";
 
     public ArticlePageObject(AppiumDriver driver) {
         super(driver);
+    }
+
+    // TEMPLATES METHODS
+    private static String getFolderXpathByName(String substring) {
+        return CHOISE_EXIST_FOLDER_TPL.replace("{FOLDER_NAME}", substring);
     }
 
     public WebElement waitForTitleElement() {
@@ -37,7 +43,13 @@ public class ArticlePageObject extends MainPageObject {
         );
     }
 
-    public void addArticleToMyList(String nameOfFolder) {
+    public void addArticleToNewMyList(String nameOfFolder) {
+        this.waitForElementPresent(
+                By.xpath(OPTION_BUTTON),
+                "Can`t find 'Article option' button",
+                5
+        );
+
         this.waitForElementAndClick(
                 By.xpath(OPTION_BUTTON),
                 "Can`t find 'Article option' button",
@@ -72,6 +84,32 @@ public class ArticlePageObject extends MainPageObject {
         this.waitForElementAndClick(
                 By.xpath(MY_LIST_OK_BUTTON),
                 "Can`t find 'OK' button",
+                5
+        );
+    }
+
+    public void addArticleToExistMyList(String nameOfFolder) {
+        this.waitForElementPresent(
+                By.xpath(OPTION_BUTTON),
+                "Can`t find 'Article option' button",
+                5
+        );
+
+        this.waitForElementAndClick(
+                By.xpath(OPTION_BUTTON),
+                "Can`t find 'Article option' button",
+                5
+        );
+
+        this.waitForElementAndClick(
+                By.xpath(OPTION_ADD_TO_MY_LIST_BUTTON),
+                "Can`t find 'Add to reading list' option",
+                5
+        );
+
+        this.waitForElementAndClick(
+                By.xpath(getFolderXpathByName(nameOfFolder)),
+                "Can`t find " + nameOfFolder + " folder to save article",
                 5
         );
     }

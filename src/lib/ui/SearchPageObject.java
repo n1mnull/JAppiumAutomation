@@ -2,6 +2,10 @@ package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SearchPageObject extends MainPageObject {
 
@@ -11,7 +15,9 @@ public class SearchPageObject extends MainPageObject {
             SEARCH_RESULT_WITH_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{SUBSTRING}']",
             SEARCH_CANCEL_BUTTON = "org.wikipedia:id/search_close_btn",
             SEARCH_RESULT_ELEMENT = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']",
-            EMPTY_RESULT_LABEL = "//*[@text='No results found']";
+            SEARCH_RESULT_ELEMENT_BY_TITLE = "//*[@resource-id='org.wikipedia:id/page_list_item_title']",
+            EMPTY_RESULT_LABEL = "//*[@text='No results found']",
+            SEARCH_EMPTY_MESSAGE = "org.wikipedia:id/search_empty_message";
 
     public SearchPageObject(AppiumDriver driver) {
         super(driver);
@@ -62,8 +68,27 @@ public class SearchPageObject extends MainPageObject {
         return this.getAmountOfElements(By.xpath(SEARCH_RESULT_ELEMENT));
     }
 
+    public List<WebElement> getSearchElements() {
+        return this.waitForElementsPresent(
+                By.xpath(SEARCH_RESULT_ELEMENT_BY_TITLE),
+                "Can`t find any elements",
+                15);
+    }
+
+    public ArrayList<String> getArticleTitles(List<WebElement> searchFieldElement) {
+        ArrayList<String> result = new ArrayList<>(searchFieldElement.size());
+        for (WebElement element : searchFieldElement) {
+            result.add(element.getAttribute("text"));
+        }
+        return result;
+    }
+
     public void waitForEmptyResultsLabel() {
         this.waitForElementPresent(By.xpath(EMPTY_RESULT_LABEL), "Can`t find empty result element", 15);
+    }
+
+    public void waitForEmptyMessageDisplay() {
+        this.waitForElementPresent(By.id(SEARCH_EMPTY_MESSAGE), "Can`t find empty message", 15);
     }
 
     public void assertThereIsNoResultOfSearch() {
