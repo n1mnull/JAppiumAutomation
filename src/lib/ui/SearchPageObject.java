@@ -16,6 +16,7 @@ public class SearchPageObject extends MainPageObject {
             SEARCH_CANCEL_BUTTON = "org.wikipedia:id/search_close_btn",
             SEARCH_RESULT_ELEMENT = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']",
             SEARCH_RESULT_ELEMENT_BY_TITLE = "//*[@resource-id='org.wikipedia:id/page_list_item_title']",
+            SEARCH_RESULT_ELEMENT_BY_TITLE_AND_DESCRIPTION_TPL = "//*[./*[@text='{ARTICLE_TITLE}'] and ./*[@text='{ARTICLE_DESCRIPTION}']]",
             EMPTY_RESULT_LABEL = "//*[@text='No results found']",
             SEARCH_EMPTY_MESSAGE = "org.wikipedia:id/search_empty_message";
 
@@ -26,6 +27,11 @@ public class SearchPageObject extends MainPageObject {
     // TEMPLATES METHODS
     private static String getResultSearchElement(String substring) {
         return SEARCH_RESULT_WITH_SUBSTRING_TPL.replace("{SUBSTRING}", substring);
+    }
+
+    // TEMPLATES METHODS
+    private static String getResultSearchElementByTitleDescription(String titleArticle, String descriptionArticle) {
+        return SEARCH_RESULT_ELEMENT_BY_TITLE_AND_DESCRIPTION_TPL.replace("{ARTICLE_TITLE}", titleArticle).replace("{ARTICLE_DESCRIPTION}", descriptionArticle);
     }
 
     public void initSearchInput() {
@@ -57,6 +63,15 @@ public class SearchPageObject extends MainPageObject {
     public void clickByArticleWithSubstring(String substring) {
         String searchResultXpath = getResultSearchElement(substring);
         this.waitForElementAndClick(By.xpath(searchResultXpath),"Can`t find and click search result with substring " + substring);
+    }
+
+    public void waitForElementByTitleAndDescription(String titleArticle, String descriptionArticle) {
+        String searchResultXpath = getResultSearchElementByTitleDescription(titleArticle, descriptionArticle);
+        this.waitForElementPresent(
+                By.xpath(searchResultXpath),
+                "Can`t find and click search result with titleArticle " + titleArticle + "descriptionArticle " + descriptionArticle,
+                15
+        );
     }
 
     public int getAmountOfFoundArticles() {
