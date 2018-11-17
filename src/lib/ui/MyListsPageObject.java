@@ -6,8 +6,8 @@ import org.openqa.selenium.By;
 public class MyListsPageObject extends MainPageObject {
 
     private static final String
-            FOLDER_BY_NAME_TPL = "//*[@text='{FOLDER_NAME}']",
-            ARTICLE_BY_TITLE_TPL = "//*[@text='{TITLE}']";
+            FOLDER_BY_NAME_TPL = "xpath://*[@text='{FOLDER_NAME}']",
+            ARTICLE_BY_TITLE_TPL = "xpath://*[@text='{TITLE}']";
 
     public MyListsPageObject(AppiumDriver driver) {
         super(driver);
@@ -25,7 +25,7 @@ public class MyListsPageObject extends MainPageObject {
 
     public void openFolderByName(String nameOfFolder) {
         this.waitForElementAndClick(
-                By.xpath(getFolderXpathByName(nameOfFolder)),
+                getFolderXpathByName(nameOfFolder),
                 "Can`t find folder be name " + nameOfFolder,
                 5
         );
@@ -34,7 +34,7 @@ public class MyListsPageObject extends MainPageObject {
     public void swipeByArticleToDelete(String articleTitle) {
         this.waitForArticleToAppearByTitle(articleTitle);
         this.swipeElementToLeft(
-                By.xpath(getSavedArticleXpathByTitle(articleTitle)),
+                getSavedArticleXpathByTitle(articleTitle),
                 "Can`t find saved article"
         );
         this.waitForArticleToDisappearByTitle(articleTitle);
@@ -42,7 +42,7 @@ public class MyListsPageObject extends MainPageObject {
 
     public void waitForArticleToDisappearByTitle(String articleTitle) {
         this.waitForElementNotPresent(
-                By.xpath(getFolderXpathByName(articleTitle)),
+                getFolderXpathByName(articleTitle),
                 "Saved article still present with title " + articleTitle,
                 15
         );
@@ -50,7 +50,7 @@ public class MyListsPageObject extends MainPageObject {
 
     public void waitForArticleToAppearByTitle(String articleTitle) {
         this.waitForElementPresent(
-                By.xpath(getFolderXpathByName(articleTitle)),
+                getFolderXpathByName(articleTitle),
                 "Can`t find saved article by title " + articleTitle,
                 15
         );
@@ -59,7 +59,7 @@ public class MyListsPageObject extends MainPageObject {
     public void openArticleByName(String articleTitle) {
         this.waitForArticleToAppearByTitle(articleTitle);
         this.waitForElementAndClick(
-                By.xpath(getSavedArticleXpathByTitle(articleTitle)),
+                getSavedArticleXpathByTitle(articleTitle),
                 "Can`t find article be name " + articleTitle,
                 5
         );
