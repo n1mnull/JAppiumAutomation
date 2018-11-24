@@ -1,5 +1,9 @@
 import lib.CoreTestCase;
 import lib.ui.*;
+import lib.ui.factories.ArticlePageObjectFactory;
+import lib.ui.factories.MyListsPageObjectFactory;
+import lib.ui.factories.NavigationUIFactory;
+import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
 
 public class FourthClassWork extends CoreTestCase {
@@ -9,7 +13,7 @@ public class FourthClassWork extends CoreTestCase {
 
         String searchLine = "Java";
         String searchResult = "Object-oriented programming language";
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine(searchLine);
@@ -20,7 +24,7 @@ public class FourthClassWork extends CoreTestCase {
     public void testCancelSearch() {
 
         String searchLine = "Java";
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
 //        searchPageObject.typeSearchLine(searchLine);
@@ -33,8 +37,8 @@ public class FourthClassWork extends CoreTestCase {
     public void testCompareArticleTitle() {
         String searchLine = "Java";
         String searchResult = "Object-oriented programming language";
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
-        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
+        ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine(searchLine);
@@ -53,8 +57,8 @@ public class FourthClassWork extends CoreTestCase {
     public void testSwipeArticle() {
         String searchLine = "Appium";
         String searchResult = "Appium";
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
-        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
+        ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine(searchLine);
@@ -71,22 +75,22 @@ public class FourthClassWork extends CoreTestCase {
         String searchResult = "Object-oriented programming language";
         String nameOfFolder = "Learning programing";
 
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine(searchLine);
         searchPageObject.clickByArticleWithSubstring(searchResult);
 
-        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
         articlePageObject.waitForTitleElement();
         String articleTitle = articlePageObject.getArticleTitle();
 
         articlePageObject.addArticleToNewMyList(nameOfFolder);
         articlePageObject.closeArticle();
 
-        NavigationUI navigationUI = new NavigationUI(driver);
+        NavigationUI navigationUI = NavigationUIFactory.get(driver);
         navigationUI.clickMyList();
 
-        MyListsPageObject myListsPageObject = new MyListsPageObject(driver);
+        MyListsPageObject myListsPageObject = MyListsPageObjectFactory.get(driver);
         myListsPageObject.openFolderByName(nameOfFolder);
         myListsPageObject.swipeByArticleToDelete(articleTitle);
     }
@@ -95,7 +99,7 @@ public class FourthClassWork extends CoreTestCase {
     public void testAmountOfNotEmptySearch() {
 
         String searchLine = "Linkin Park Discography";
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine(searchLine);
         int amountOfSearchResult = searchPageObject.getAmountOfFoundArticles();
@@ -110,7 +114,7 @@ public class FourthClassWork extends CoreTestCase {
     public void testAmountOfEmptySearch() {
 
         String searchLine = "zxcvasdfqwer";
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine(searchLine);
 
@@ -124,12 +128,12 @@ public class FourthClassWork extends CoreTestCase {
         String searchLine = "Java";
         String searchResult = "Object-oriented programming language";
 
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine(searchLine);
         searchPageObject.clickByArticleWithSubstring(searchResult);
 
-        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
         articlePageObject.waitForTitleElement();
         String titleBeforeRotation = articlePageObject.getArticleTitle();
         this.rotateScreenLandscape();
@@ -155,7 +159,7 @@ public class FourthClassWork extends CoreTestCase {
         String searchLine = "Java";
         String searchResult = "Object-oriented programming language";
 
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine(searchLine);
         searchPageObject.waitForSearchResult(searchResult);

@@ -2,6 +2,7 @@ package tests;
 
 import lib.CoreTestCase;
 import lib.ui.SearchPageObject;
+import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
 
 public class SearchTests extends CoreTestCase {
@@ -11,7 +12,7 @@ public class SearchTests extends CoreTestCase {
 
         String searchLine = "Java";
         String searchResult = "Object-oriented programming language";
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine(searchLine);
@@ -22,7 +23,7 @@ public class SearchTests extends CoreTestCase {
     public void testCancelSearch() {
 
         String searchLine = "Java";
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
 //        searchPageObject.typeSearchLine(searchLine);
@@ -35,7 +36,7 @@ public class SearchTests extends CoreTestCase {
     public void testAmountOfNotEmptySearch() {
 
         String searchLine = "Linkin Park Discography";
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine(searchLine);
         int amountOfSearchResult = searchPageObject.getAmountOfFoundArticles();
@@ -50,7 +51,7 @@ public class SearchTests extends CoreTestCase {
     public void testAmountOfEmptySearch() {
 
         String searchLine = "zxcvasdfqwer";
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine(searchLine);
 
@@ -62,7 +63,7 @@ public class SearchTests extends CoreTestCase {
     public void testSearchByTitleAndDescriptionHomeTaskEx9() {
         String searchLine = "Java";
 
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine(searchLine);
 
