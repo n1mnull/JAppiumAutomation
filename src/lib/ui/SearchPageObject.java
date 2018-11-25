@@ -1,6 +1,7 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
 import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
@@ -100,7 +101,7 @@ abstract public class SearchPageObject extends MainPageObject {
 
     public List<WebElement> getSearchElements() {
         return this.waitForElementsPresent(
-                SEARCH_RESULT_ELEMENT_BY_TITLE,
+                getResultSearchElement(""),
                 "Can`t find any elements",
                 15);
     }
@@ -108,7 +109,15 @@ abstract public class SearchPageObject extends MainPageObject {
     public ArrayList<String> getArticleTitles(List<WebElement> searchFieldElement) {
         ArrayList<String> result = new ArrayList<>(searchFieldElement.size());
         for (WebElement element : searchFieldElement) {
-            result.add(element.getAttribute("text"));
+            if (Platform.getInstance().isAndroid()) {
+                result.add(element.getAttribute("text"));
+            } else {
+                String titleWithDescription = element.getAttribute("name");
+                if (titleWithDescription.indexOf("\n") != -1)
+                    result.add(titleWithDescription.substring(0, titleWithDescription.indexOf("\n")));
+                else
+                    result.add(titleWithDescription);
+            }
         }
         return result;
     }

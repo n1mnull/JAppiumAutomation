@@ -8,6 +8,7 @@ abstract public class ArticlePageObject extends MainPageObject {
 
     protected static String
             TITLE,
+            TITLE_TPL,
             FOOTER_ELEMENT,
             OPTION_BUTTON,
             OPTION_ADD_TO_MY_LIST_BUTTON,
@@ -26,8 +27,19 @@ abstract public class ArticlePageObject extends MainPageObject {
         return CHOISE_EXIST_FOLDER_TPL.replace("{FOLDER_NAME}", substring);
     }
 
+    private static String getTitleXpathByName(String substring) {
+        return TITLE_TPL.replace("{TITLE}", substring);
+    }
+
     public WebElement waitForTitleElement() {
         return this.waitForElementPresent(TITLE, "Can`t find article '" + TITLE + "' title on page", 15);
+    }
+
+    public WebElement waitForTitleElement(String article) {
+        if (Platform.getInstance().isAndroid())
+            return this.waitForElementPresent(TITLE, "Can`t find article '" + TITLE + "' title on page", 15);
+        else
+            return this.waitForElementPresent(getTitleXpathByName(article), "Can`t find article '" + getTitleXpathByName(article) + "' title on page", 15);
     }
 
     public String getArticleTitle() {
@@ -36,6 +48,19 @@ abstract public class ArticlePageObject extends MainPageObject {
             return titleElement.getAttribute("text");
         else
             return titleElement.getAttribute("name");
+    }
+
+    public String getArticleTitle(String article) {
+        WebElement titleElement = waitForTitleElement(article);
+        if (Platform.getInstance().isAndroid()) {
+            return titleElement.getAttribute("text");
+        } else {
+            String titleWithDescription = titleElement.getAttribute("name");
+            if (titleWithDescription.indexOf("\n") != -1)
+                return titleWithDescription.substring(0, titleWithDescription.indexOf("\n"));
+            else
+                return titleWithDescription;
+        }
     }
 
     public void swipeToFooter() {

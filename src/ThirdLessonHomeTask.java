@@ -1,5 +1,6 @@
 import io.appium.java_client.TouchAction;
 import lib.CoreTestCase;
+import lib.Platform;
 import lib.ui.ArticlePageObject;
 import lib.ui.MyListsPageObject;
 import lib.ui.NavigationUI;
@@ -15,13 +16,14 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ThirdLessonHomeTask extends CoreTestCase {
 
     @Test
-    public void testFirstHomeTaskEx5() {
+    public void testFirstHomeTaskEx5() throws InterruptedException {
 
         String searchLine = "Android";
         String folderName = "androidFolder";
@@ -34,29 +36,48 @@ public class ThirdLessonHomeTask extends CoreTestCase {
         searchPageObject.clickByArticleWithSubstring(articlesTitle.get(0));
 
         ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
-        articlePageObject.waitForTitleElement();
-        articlePageObject.addArticleToNewMyList(folderName);
+        articlePageObject.waitForTitleElement(articlesTitle.get(0));
 
-        this.navigateBackButton();
+        if (Platform.getInstance().isAndroid()) {
+            articlePageObject.addArticleToNewMyList(folderName);
+        } else {
+            articlePageObject.addArticleToMySaved();
+            articlePageObject.closeModalWindowByClickBack();
+        }
+        articlePageObject.closeArticle();
 
         // try to add 2nd article
         searchPageObject.initSearchInput();
-        searchPageObject.typeSearchLine(searchLine);
+
+        if (Platform.getInstance().isAndroid()) {
+            searchPageObject.typeSearchLine(searchLine);
+        }
+
         searchPageObject.clickByArticleWithSubstring(articlesTitle.get(1));
 
-        articlePageObject.addArticleToExistMyList(folderName);
-        this.navigateBackButton();
+        articlePageObject.waitForTitleElement(articlesTitle.get(1));
+
+        if (Platform.getInstance().isAndroid()) {
+            articlePageObject.addArticleToExistMyList(folderName);
+        } else {
+            articlePageObject.addArticleToMySaved();
+        }
+
+        articlePageObject.closeArticle();
 
         //open My list tab
         NavigationUI navigationUI = NavigationUIFactory.get(driver);
         navigationUI.clickMyList();
 
         MyListsPageObject myListsPageObject = MyListsPageObjectFactory.get(driver);
-        myListsPageObject.openFolderByName(folderName);
+        if (Platform.getInstance().isAndroid()) {
+            myListsPageObject.openFolderByName(folderName);
+        }
+
         myListsPageObject.swipeByArticleToDelete(articlesTitle.get(1));
         myListsPageObject.openArticleByName(articlesTitle.get(0));
 
-        assertEquals("Titles are different", articlePageObject.getArticleTitle(), articlesTitle.get(0));
+        assertEquals("Titles are different", articlePageObject.getArticleTitle(articlesTitle.get(0)), articlesTitle.get(0));
     }
 
     @Test
