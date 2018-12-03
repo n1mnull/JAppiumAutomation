@@ -111,12 +111,14 @@ abstract public class SearchPageObject extends MainPageObject {
         for (WebElement element : searchFieldElement) {
             if (Platform.getInstance().isAndroid()) {
                 result.add(element.getAttribute("text"));
-            } else {
+            } else if (Platform.getInstance().isIOS()) {
                 String titleWithDescription = element.getAttribute("name");
                 if (titleWithDescription.indexOf("\n") != -1)
                     result.add(titleWithDescription.substring(0, titleWithDescription.indexOf("\n")));
                 else
                     result.add(titleWithDescription);
+            } else {
+                result.add(element.getText());
             }
         }
         return result;

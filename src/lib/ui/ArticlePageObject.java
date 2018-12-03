@@ -37,10 +37,13 @@ abstract public class ArticlePageObject extends MainPageObject {
     }
 
     public WebElement waitForTitleElement(String article) {
-        if (Platform.getInstance().isAndroid())
+        if (Platform.getInstance().isAndroid()) {
             return this.waitForElementPresent(TITLE, "Can`t find article '" + TITLE + "' title on page", 15);
-        else
+        } else if (Platform.getInstance().isIOS()) {
             return this.waitForElementPresent(getTitleXpathByName(article), "Can`t find article '" + getTitleXpathByName(article) + "' title on page", 15);
+        } else {
+            return waitForTitleElement();
+        }
     }
 
     public String getArticleTitle() {
@@ -54,6 +57,9 @@ abstract public class ArticlePageObject extends MainPageObject {
     }
 
     public String getArticleTitle(String article) {
+        if (Platform.getInstance().isMW()) {
+            return getArticleTitle();
+        }
         WebElement titleElement = waitForTitleElement(article);
         if (Platform.getInstance().isAndroid()) {
             return titleElement.getAttribute("text");
