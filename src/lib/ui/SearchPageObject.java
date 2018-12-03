@@ -83,9 +83,10 @@ abstract public class SearchPageObject extends MainPageObject {
 
     public void waitForElementByTitleAndDescription(String titleArticle, String descriptionArticle) {
         String searchResultXpath = getResultSearchElementByTitleDescription(titleArticle, descriptionArticle);
+        System.out.println(searchResultXpath);
         this.waitForElementPresent(
                 searchResultXpath,
-                "Can`t find and click search result with titleArticle " + titleArticle + "descriptionArticle " + descriptionArticle,
+                "Can`t find and click search result with titleArticle: " + titleArticle + " + descriptionArticle: " + descriptionArticle,
                 15
         );
     }
