@@ -17,7 +17,7 @@ abstract public class SearchPageObject extends MainPageObject {
             SEARCH_RESULT_ELEMENT,
             SEARCH_RESULT_ELEMENT_BY_TITLE,
             SEARCH_RESULT_ELEMENT_BY_TITLE_AND_DESCRIPTION_TPL,
-            EMPTY_RESULT_LABEL,
+            SEARCH_EMPTY_RESULT_ELEMENT,
             SEARCH_EMPTY_MESSAGE;
 
     public SearchPageObject(RemoteWebDriver driver) {
@@ -37,7 +37,7 @@ abstract public class SearchPageObject extends MainPageObject {
     public void initSearchInput() {
         this.waitForElementAndClick(
                 SEARCH_INIT_ELEMENT,
-                "Can`t find and click search init element");
+                "Can`t find and click search init element " + SEARCH_INIT_ELEMENT);
         this.waitForElementPresent(
                 SEARCH_INIT_ELEMENT,
                 "Can`t find search input after clicking search init element");
@@ -123,7 +123,7 @@ abstract public class SearchPageObject extends MainPageObject {
     }
 
     public void waitForEmptyResultsLabel() {
-        this.waitForElementPresent(EMPTY_RESULT_LABEL, "Can`t find empty result element", 15);
+        this.waitForElementPresent(SEARCH_EMPTY_RESULT_ELEMENT, "Can`t find empty result element", 15);
     }
 
     public void waitForEmptyMessageDisplay() {

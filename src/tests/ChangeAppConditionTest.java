@@ -1,6 +1,7 @@
 package tests;
 
 import lib.CoreTestCase;
+import lib.Platform;
 import lib.ui.ArticlePageObject;
 import lib.ui.SearchPageObject;
 import lib.ui.factories.ArticlePageObjectFactory;
@@ -11,6 +12,10 @@ public class ChangeAppConditionTest extends CoreTestCase {
 
     @Test
     public void testChangeScreenOrientationOnSearchResult() {
+
+        if (Platform.getInstance().isMW()) {
+            return;
+        }
 
         String searchLine = "Java";
         String searchResult = "Object-oriented programming language";
@@ -42,6 +47,10 @@ public class ChangeAppConditionTest extends CoreTestCase {
 
     @Test
     public void testCheckSearchArticleInBackground() {
+
+        if (Platform.getInstance().isMW()) {
+            return;
+        }
 
         String searchLine = "Java";
         String searchResult = "Object-oriented programming language";

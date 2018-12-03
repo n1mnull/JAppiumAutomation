@@ -12,6 +12,7 @@ abstract public class ArticlePageObject extends MainPageObject {
             FOOTER_ELEMENT,
             OPTION_BUTTON,
             OPTION_ADD_TO_MY_LIST_BUTTON,
+            OPTION_REMOVE_FROM_MY_LIST_BUTTON,
             ADD_TO_MY_LIST_OVERLAY,
             MY_LIST_NAME_INPUT,
             MY_LIST_OK_BUTTON,
@@ -46,8 +47,10 @@ abstract public class ArticlePageObject extends MainPageObject {
         WebElement titleElement = waitForTitleElement();
         if (Platform.getInstance().isAndroid())
             return titleElement.getAttribute("text");
-        else
+        else if (Platform.getInstance().isIOS())
             return titleElement.getAttribute("name");
+        else
+            return titleElement.getText();
     }
 
     public String getArticleTitle(String article) {
@@ -64,18 +67,25 @@ abstract public class ArticlePageObject extends MainPageObject {
     }
 
     public void swipeToFooter() {
-        if (Platform.getInstance().isAndroid())
+        if (Platform.getInstance().isAndroid()) {
             this.swipeUpToFindElements(
-                FOOTER_ELEMENT,
-                "Can`t find the end of article",
-                40
+                    FOOTER_ELEMENT,
+                    "Can`t find the end of article",
+                    40
             );
-        else
+        } else if (Platform.getInstance().isIOS()) {
             swipeUpTillElementAppear(
                     FOOTER_ELEMENT,
                     "Can`t find the end of article",
                     40
             );
+        } else {
+            scrollWebPageTillElementNotVisible(
+                    FOOTER_ELEMENT,
+                    "Can`t find the end of article",
+                    40
+            );
+        }
     }
 
     public void addArticleToNewMyList(String nameOfFolder) {
@@ -150,15 +160,35 @@ abstract public class ArticlePageObject extends MainPageObject {
     }
 
     public void closeArticle() {
-        this.waitForElementAndClick(
-                CLOSE_ARTICLE_BUTTON,
-                "Can`t find 'Navigate up' button, can`t close article",
-                10
-        );
+        if (Platform.getInstance().isIOS() || Platform.getInstance().isAndroid()) {
+            this.waitForElementAndClick(
+                    CLOSE_ARTICLE_BUTTON,
+                    "Can`t find 'Navigate up' button, can`t close article",
+                    10
+            );
+        } else
+            System.out.println("Method closeArticle do nothing for platform " + Platform.getInstance().getPlatformVar());
     }
 
     public void addArticleToMySaved() {
+        if (Platform.getInstance().isMW()) {
+            removeArticleFromMySavedIfItAdded();
+        }
         waitForElementAndClick(OPTION_ADD_TO_MY_LIST_BUTTON, "Cannot find option to add article to reading list");
+    }
+
+    public void removeArticleFromMySavedIfItAdded() {
+        if (isElementPresent(OPTION_REMOVE_FROM_MY_LIST_BUTTON)) {
+            waitForElementAndClick(
+                    OPTION_REMOVE_FROM_MY_LIST_BUTTON,
+                    "Cannot click button to remove an article from saved",
+                    1
+            );
+            waitForElementPresent(
+                    OPTION_ADD_TO_MY_LIST_BUTTON,
+                    "Cannot find button to add article to saved list after removing it from this list before"
+            );
+        }
     }
 
     public void closeModalWindowByClickBack() {

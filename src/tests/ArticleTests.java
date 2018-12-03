@@ -12,7 +12,7 @@ public class ArticleTests extends CoreTestCase {
     @Test
     public void testCompareArticleTitle() {
         String searchLine = "Java";
-        String searchResult = "Object-oriented programming language";
+        String searchResult = "bject-oriented programming language";
         SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
 
@@ -32,7 +32,7 @@ public class ArticleTests extends CoreTestCase {
     @Test
     public void testSwipeArticle() {
         String searchLine = "Java";
-        String searchResult = "Java (programming language)";
+        String searchResult = "programming language";
         SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
 

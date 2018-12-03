@@ -6,6 +6,7 @@ import lib.Platform;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -85,6 +86,26 @@ public class MainPageObject {
         }
     }
 
+    public void scrollWebPageUp() {
+        if (Platform.getInstance().isMW()) {
+            JavascriptExecutor jsExecutor = (JavascriptExecutor)driver;
+            jsExecutor.executeScript("window.scrollBy(0, 250)");
+        } else
+            System.out.println("Method scrollWebPageUp does nothing for platform " + Platform.getInstance().getPlatformVar());
+    }
+
+    public void scrollWebPageTillElementNotVisible(String locator, String errorMessage, int maxSwipes) {
+        int alreadySwiped = 0;
+        WebElement element = waitForElementPresent(locator, errorMessage);
+        while (!isElementLocatedOnTheScreen(locator)) {
+            scrollWebPageUp();
+            ++alreadySwiped;
+            if (alreadySwiped > maxSwipes) {
+                Assert.assertTrue(errorMessage, element.isDisplayed());
+            }
+        }
+    }
+
     public void swipeUp(int timeOfSwipe) {
 
         if (driver instanceof AppiumDriver) {
@@ -137,6 +158,11 @@ public class MainPageObject {
 
     public boolean isElementLocatedOnTheScreen(String locator) {
         int elementLocationByY = waitForElementPresent(locator, "Cannot find element by locator", 1).getLocation().getY();
+        if (Platform.getInstance().isMW()) {
+            JavascriptExecutor jsExecutor = (JavascriptExecutor)driver;
+            Object jsResult = jsExecutor.executeScript("return window.pageYOffset");
+            elementLocationByY -= Integer.parseInt(jsResult.toString());
+        }
         int screenSizeByY = driver.manage().window().getSize().getHeight();
         return elementLocationByY < screenSizeByY;
     }
@@ -190,6 +216,27 @@ public class MainPageObject {
         By by = getLocatorByString(locator);
         List elements = driver.findElements(by);
         return elements.size();
+    }
+
+    public boolean isElementPresent(String locator) {
+        return getAmountOfElements(locator) > 0;
+    }
+
+    public void tryClickElementWuthFewAttempts(String locator, String errorMessage, int amountOfAttempts) {
+        int currentAttempts = 0;
+        boolean needMoreAttempts = true;
+
+        while (needMoreAttempts) {
+            try {
+                waitForElementAndClick(locator, errorMessage, 5);
+                needMoreAttempts = false;
+            } catch (Exception e) {
+                if (currentAttempts > amountOfAttempts) {
+                    waitForElementAndClick(locator, errorMessage);
+                }
+            }
+            ++currentAttempts;
+        }
     }
 
     public void assertElementNotPresent(String locator, String errorMessage) {

@@ -1,4 +1,3 @@
-import io.appium.java_client.TouchAction;
 import lib.CoreTestCase;
 import lib.Platform;
 import lib.ui.ArticlePageObject;
@@ -9,21 +8,16 @@ import lib.ui.factories.ArticlePageObjectFactory;
 import lib.ui.factories.MyListsPageObjectFactory;
 import lib.ui.factories.NavigationUIFactory;
 import lib.ui.factories.SearchPageObjectFactory;
-import org.junit.Assert;
 import org.junit.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ThirdLessonHomeTask extends CoreTestCase {
 
     @Test
-    public void testFirstHomeTaskEx5() throws InterruptedException {
+    public void testFirstHomeTaskEx5() {
 
         String searchLine = "Android";
         String folderName = "androidFolder";

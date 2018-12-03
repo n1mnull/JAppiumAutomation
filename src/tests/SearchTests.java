@@ -11,7 +11,7 @@ public class SearchTests extends CoreTestCase {
     public void testSearch() {
 
         String searchLine = "Java";
-        String searchResult = "Object-oriented programming language";
+        String searchResult = "bject-oriented programming language";
         SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
