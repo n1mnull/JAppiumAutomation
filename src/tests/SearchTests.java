@@ -67,9 +67,9 @@ public class SearchTests extends CoreTestCase {
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine(searchLine);
 
-        searchPageObject.waitForElementByTitleAndDescription("Java version history", "Wikimedia list article");
-        searchPageObject.waitForElementByTitleAndDescription("Java (programming language)", "Object-oriented programming language");
-        searchPageObject.waitForElementByTitleAndDescription("Java (software platform)", "Set of several computer software products and specifications");
+        searchPageObject.waitForElementByTitleAndDescription("Java version history", "ikimedia list article");
+        searchPageObject.waitForElementByTitleAndDescription("Java (programming language)", "bject-oriented programming language");
+        searchPageObject.waitForElementByTitleAndDescription("Java (software platform)", "et of several computer software products and specifications");
 
     }
 }
